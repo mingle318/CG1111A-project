@@ -4,7 +4,6 @@
 // Declarations shared by the sketch tabs.
 void setWheels(int leftPower, int rightPower);
 void setMotion(int leftDirection, int rightDirection, bool turning);
-bool irTableValid();
 int readIrRaw();
 double getIRDist();
 float ultrasonicDistanceCm();

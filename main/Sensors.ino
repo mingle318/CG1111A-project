@@ -1,22 +1,17 @@
 
 int getAverageIr() {
   double total = 0;
-  for(int i = 0; i < 5; i++) {
-    delay(IR_WAIT);
+  for(int i = 0; i < 3; i++) {
+    delayMicroseconds(IR_WAIT);
     total += analogRead(IR_PIN);
   }
-  return (int)total / 5;
+  return (int)total / 3;
 }
 
 int readIrRaw() {
-  // Discard the first ADC conversion after a possible channel change.
   toggleDecoderPin(1);
-  // digitalWrite(IR_EMITTER_PIN, HIGH);
   int offset = getAverageIr();
-  // Serial.print("OFFSET: ");
-  // Serial.println(offset);
   toggleDecoderPin(0);
-  // digitalWrite(IR_EMITTER_PIN, LOW);
   return getAverageIr() - offset;
 }
 
@@ -74,8 +69,6 @@ void printCalibration() {
   Serial.print(ir_raw);
   Serial.print(F("  ultrasonic_cm="));
   Serial.println(us, 1);
-  // Serial.print("Steering: ");
-  // Serial.println(steering);
 }
 
 bool blackDetected() {
@@ -113,63 +106,6 @@ int getAvgReading(int times) {
   return total/times;
 }
 
-
-
-int getClosestColour() {
-  double input[3] = {0, 0, 0};
-  Serial.print("{");
-  for(int c = 0; c <= 2; c++){
-    // Serial.print(COLOUR_STR[c]);
-    toggleDecoderPin(LED_ARRAY[c]); // Turn ON the LED, red, green or blue, one colour at a time.
-    delay(RGB_WAIT);
-    // Get the average of 5 consecutive readings for the current colour and return an average
-    input[c] = getAvgReading(5);
-    // The average reading returned minus the lowest value divided by the maximum possible range, multiplied by 255 will give a value between 0-255, representing the value for the current reflectivity (i.e. the colour LDR is exposed to)
-    input[c] = (input[c] - BLACK_ARRAY[c])/(GREY_DIFF[c])*255;
-    toggleDecoderPin(0); // Turn off the current LED colour
-    delay(RGB_WAIT);
-    Serial.print(int(input[c]));
-    if(c < 2)
-    Serial.print(", ");
-  } 
-  Serial.println("}");
-  
-  int output = -1;
-  double min_dist_to_target = 0;
-  double cur_dist_to_target = 0;
-
-  for(int i = 0; i < 6; i++) {
-    cur_dist_to_target = 0;
-    //sum the square of differences
-    for(int j = 0; j < 3; j++) {
-      double sq_component = pow((input[j] - COLOUR_TARGET[i][j]), 2);
-      cur_dist_to_target += sq_component;
-    }
-    //compare the distances, keep the smallest one
-    if(i == 0) {
-      //initialise first guess
-      min_dist_to_target = cur_dist_to_target;
-      output = i;
-    } else if(cur_dist_to_target < min_dist_to_target) {
-      min_dist_to_target = cur_dist_to_target;
-      output = i;
-    }
-  }
-  return output;
-}
-
-int guessColorByDistance() {
-  int cnt[6] = {0, 0, 0, 0, 0, 0};
-  for(int i = 1; i <= 5; i++) { //Guess 5 times
-    cnt[getClosestColour()]++;
-  }
-  int color = 0;
-  for(int i = 1; i < 6; i++) {
-    if(cnt[i] > cnt[color]) color = i;
-  }
-  return color;
-}
-
 int guessColorByValue() {
   double input[3] = {0, 0, 0};
   Serial.print("{");
@@ -183,22 +119,20 @@ int guessColorByValue() {
     if(c < 2)
     Serial.print(", ");
   } 
-  Serial.println(int(input[0]));
   Serial.println("}");
   if(input[1] >= 240 && input[2] >= 240) {
     return 5; //White
-  }
-  if(input[1] < 150 && input[2] < 150) {
-    return 0; //Red
-  }
-  if(input[2] < 120) {
-    return 3; //Orange
   }
   if(input[0] < 200) {
     if(input[2] > input[1]) return 1; //Blue;
     else return 2; //Green
   }
-  
+  if(input[1] < 150 && input[2] < 150) {
+    return 0; //Red
+  }
+  if(input[2] < 150) {
+    return 3; //Orange
+  }  
   return 4; //Pink
 }
 

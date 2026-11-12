@@ -30,14 +30,19 @@ void turnRight90() {
 
 void turn180() {
   stepCount = 0;
-  addStep(-1, 1, TURN_180_MS, true);
+  double distance_to_right = ultrasonicDistanceCm();
+  if(distance_to_right == -1.0 || distance_to_right > 10.5) {
+    addStep(1, -1, TURN_180_MS_RIGHT, true);
+  } else {  
+    addStep(-1, 1, TURN_180_MS_LEFT, true);
+  }
   startPlan();
 }
 
 void uTurnLeft() {
   stepCount = 0;
   addStep(-1, 1, LEFT_90_MS, true);
-  addStep(1, 1, GRID_MS, false);
+  addStep(1, 1, GRID_MS_LEFT, false);
   addStep(-1, 1, LEFT_90_MS, true);
   startPlan();
 }
@@ -45,7 +50,7 @@ void uTurnLeft() {
 void uTurnRight() {
   stepCount = 0;
   addStep(1, -1, RIGHT_90_MS, true);
-  addStep(1, 1, GRID_MS, false);
+  addStep(1, 1, GRID_MS_RIGHT, false);
   addStep(1, -1, RIGHT_90_MS, true);
   startPlan();
 }
@@ -56,6 +61,7 @@ void solveChallenge() {
   steering = 0;
   int idx = guessColorByValue();
   enum Action action = ACTION[idx];
+  setColor(COLOUR_TARGET[idx]);
   switch (action) {
     case LEFT_90:  turnLeft90();  break;
     case RIGHT_90: turnRight90(); break;

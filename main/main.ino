@@ -20,7 +20,6 @@ struct Step {
 
 Step steps[3];
 uint8_t stepCount = 0, stepIndex = 0;
-uint8_t blackCount = 0, whiteCount = 0;
 bool pausing = false;
 bool lineArmed = false;
 uint32_t poweredOnAt = 0, motionStartedAt = 0;
@@ -39,11 +38,10 @@ void setup() {
   pinMode(LDR_PIN, INPUT);
   pinMode(DECODER.A_pin, OUTPUT);
   pinMode(DECODER.B_pin, OUTPUT);
-  // pinMode(IR_EMITTER_PIN, OUTPUT);
 
-  // state = CALIBRATING;
   state = WAITING;
-  stepCount = stepIndex = blackCount = whiteCount = 0;
+  // state = CALIBRATING;
+  stepCount = stepIndex = 0;
   lineArmed = false;
   pausing = false;
   poweredOnAt = millis();
@@ -57,9 +55,8 @@ void loop() {
   if(state == CALIBRATING) {
     delay(1000);
     int idx = guessColorByValue();
-    Serial.print("COLOR: ");
-    Serial.println(COLOR[idx]);
-    // printCalibration();
+    setColor(COLOUR_TARGET[idx]);
+    printCalibration();
     return;
   }
 
@@ -69,14 +66,11 @@ void loop() {
   }
   if (state == WAITING) {
     if ((uint32_t)(now - poweredOnAt) < START_DELAY_MS) return;
-    if (blackDetected()) {
-      stopRobot();
-      return;
-    }
     beginApproach(now, false);
   }
 
   if (state == APPROACH) {
+    setColor(COLOUR_TARGET[6]);
     if (blackDetected()) {
       setWheels(0, 0);
       solveChallenge();
