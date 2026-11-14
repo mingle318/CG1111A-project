@@ -1,7 +1,7 @@
 // Define time delay before the next RGB colour turns ON to allow LDR to stabilize
-const int RGBWait = 200; // In milliseconds (ms)
+const int RGBWait = 100; // In milliseconds (ms)
 // Define time delay before taking another LDR reading
-const int LDRWait = 10; // In milliseconds (ms)
+const int LDRWait = 50; // In milliseconds (ms)
 // Pin Definitions
 const byte  LDR = A3; // LDR sensor pin at A3
 //const byte LED = 13; // Check Indicator to signal Calibration Completed
@@ -74,23 +74,23 @@ void setBalance(){
   Serial.println("Colour Sensor Is Ready.");
   Serial.print("whiteArray[]:");
   Serial.print(whiteArray[0]);
-  Serial.print(" ");
+  Serial.print(", ");
   Serial.print(whiteArray[1]);
-  Serial.print(" ");
+  Serial.print(", ");
   Serial.println(whiteArray[2]);
 
   Serial.print("blackArray[]:");
   Serial.print(blackArray[0]);
-  Serial.print(" ");
+  Serial.print(", ");
   Serial.print(blackArray[1]);
-  Serial.print(" ");
+  Serial.print(", ");
   Serial.println(blackArray[2]);
 
   Serial.print("greyDiff[]:");
   Serial.print(greyDiff[0]);
-  Serial.print(" ");
+  Serial.print(", ");
   Serial.print(greyDiff[1]);
-  Serial.print(" ");
+  Serial.print(", ");
   Serial.println(greyDiff[2]);
 
   delay(5000);
@@ -134,7 +134,7 @@ void loop(){
     toggle_decoder_pin(ledArray[c]); // Turn ON the LED, red, green or blue, one colour at a time.
     delay(RGBWait);
     // Get the average of 5 consecutive readings for the current colour and return an average
-    colourArray[c] = getAvgReading(5);
+    colourArray[c] = getAvgReading(1);
     // The average reading returned minus the lowest value divided by the maximum possible range, multiplied by 255 will give a value between 0-255, representing the value for the current reflectivity (i.e. the colour LDR is exposed to)
     colourArray[c] = (colourArray[c] - blackArray[c])/(greyDiff[c])*255;
     toggle_decoder_pin(0); // Turn off the current LED colour

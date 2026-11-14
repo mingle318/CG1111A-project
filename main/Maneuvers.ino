@@ -31,7 +31,7 @@ void turnRight90() {
 void turn180() {
   stepCount = 0;
   double distance_to_right = ultrasonicDistanceCm();
-  if(distance_to_right == -1.0 || distance_to_right > 10.5) {
+  if(distance_to_right == -1.0 || distance_to_right > RIHGT_TOO_CLOSE) {
     addStep(1, -1, TURN_180_MS_RIGHT, true);
   } else {  
     addStep(-1, 1, TURN_180_MS_LEFT, true);

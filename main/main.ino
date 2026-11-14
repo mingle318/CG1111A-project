@@ -21,18 +21,16 @@ struct Step {
 Step steps[3];
 uint8_t stepCount = 0, stepIndex = 0;
 bool pausing = false;
-bool lineArmed = false;
 uint32_t poweredOnAt = 0, motionStartedAt = 0;
 uint32_t pauseStartedAt = 0;
 
 
 uint32_t lastWallAt = 0;
-uint32_t lastPrintAt = 0;
 float steering = 0;
 
 void setup() {
   setWheels(0, 0);
-  // Serial.begin(115200);
+  //Serial.begin(115200);
   pinMode(IR_PIN, INPUT);
   pinMode(US_PIN, INPUT);
   pinMode(LDR_PIN, INPUT);
@@ -40,9 +38,7 @@ void setup() {
   pinMode(DECODER.B_pin, OUTPUT);
 
   state = WAITING;
-  // state = CALIBRATING;
   stepCount = stepIndex = 0;
-  lineArmed = false;
   pausing = false;
   poweredOnAt = millis();
   resetWalls(poweredOnAt);
@@ -53,7 +49,7 @@ void loop() {
   const uint32_t now = millis();
 
   if(state == CALIBRATING) {
-    delay(1000);
+    delay(3000);
     int idx = guessColorByValue();
     setColor(COLOUR_TARGET[idx]);
     printCalibration();
@@ -76,7 +72,6 @@ void loop() {
       solveChallenge();
       return;
     }
-
     updateDistanceSensors();
     uint32_t afterRead = millis();
     // Check black again after the bounded ultrasonic wait.

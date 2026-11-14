@@ -31,9 +31,8 @@ const Action ACTION[] = {LEFT_90, U_RIGHT, RIGHT_90, TURN_180, U_LEFT, STOP};
 const int RGB_WAIT = 100;
 const int LDR_WAIT = 50;
 const int IR_WAIT = 50; // In microseconds (us)
-// Pin Definitions
+
 const int LDR_PIN = A3;
-// const int IR_EMITTER_PIN = A0;
 const uint8_t US_PIN = 12;
 const uint8_t IR_PIN = A2;
 
@@ -44,7 +43,7 @@ const float BLACK_ARRAY[] = {899.00, 507.00, 598.00};
 const float GREY_DIFF[] = {89.00, 394.00, 322.00};
 
 const char COLOUR_STR[3][5] = {"R = ", "G = ", "B = "}; //For debugging
-const String COLOR_TAG[6] = {"Red", "Blue", "Green", "Orange", "Pink", "White"};
+const String COLOR_TAG[6] = {"Red", "Blue", "Green", "Orange", "Pink", "White"}; // For debugging
 
 typedef struct {
   int A_pin;
@@ -54,7 +53,7 @@ const Decoder DECODER = {.A_pin = A0, .B_pin = A1};
 
 
 
-const int IR_ARRAY[10] = {-926, -511, -360, -291, -240, -220, -205, -197, -190, -183};
+const int IR_ARRAY[10] = {-458, -285, -217, -186, -168, -156, -145, -141, -136, -134};
 
 
 const int COLOUR_TARGET[7][3] = {
@@ -69,11 +68,9 @@ const int COLOUR_TARGET[7][3] = {
 
 
 const float IR_TOO_CLOSE = -160; //IR raw value
-const float RIGHT_MIN_CM = 9.0;
-const float RIGHT_MAX_CM = 13.5;
-const float RIGHT_DEADBAND_CM = 2.25f;
 const float RIGHT_TARGET_CM = 11.0;
 const float RIGHT_WALL_LIMIT_CM = 15;
+const float RIHGT_TOO_CLOSE = 10.5;
 const float LEFT_CORRECTION = 180;
 const float KP = 12.0f;
 const uint32_t US_TIMEOUT_US = 1500;

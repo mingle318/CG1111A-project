@@ -59,11 +59,7 @@ float ultrasonicDistanceCm() {
 }
 
 void printCalibration() {
-  uint32_t now = millis();
-  if ((uint32_t)(now - lastPrintAt) < 250) return;
-  lastPrintAt = now;
   float us = ultrasonicDistanceCm();
-  // double ir_cm = getIRDist();
   int ir_raw = readIrRaw();
   Serial.print("IR_raw= ");
   Serial.print(ir_raw);
@@ -92,7 +88,7 @@ void toggleDecoderPin(int Y_pin) {
   }
 }
 
-int getAvgReading(int times) {
+int getAvgLDRReading(int times) {
   // Find the average reading for the requested number of times of scanning LDR
   int reading;
   int total =0;
@@ -112,7 +108,7 @@ int guessColorByValue() {
   for(int c = 0; c <= 2; c++){
     toggleDecoderPin(LED_ARRAY[c]);
     delay(RGB_WAIT);
-    input[c] = getAvgReading(1);
+    input[c] = getAvgLDRReading(1);
     input[c] = (input[c] - BLACK_ARRAY[c])/(GREY_DIFF[c])*255;
     toggleDecoderPin(0);
     Serial.print(int(input[c]));
