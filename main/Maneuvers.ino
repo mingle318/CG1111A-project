@@ -72,7 +72,7 @@ void solveChallenge() {
   }
 }
 
-void beginApproach(uint32_t now, bool mustClearMarker) {
+void beginApproach(uint32_t now) {
   state = APPROACH;
   motionStartedAt = now;
   resetWalls(now);
@@ -90,7 +90,7 @@ void updateManeuver(uint32_t now) {
     if ((uint32_t)(now - pauseStartedAt) < SETTLE_MS) return; // Pause SETTLE_MS before the first step and after every completed step.
 
     if (stepIndex >= stepCount) {
-      beginApproach(now, true);  // After the final step, return to APPROACH.
+      beginApproach(now);  // After the final step, return to APPROACH.
       return;
     }
 

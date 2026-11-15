@@ -24,7 +24,7 @@ void turn180();
 void uTurnLeft(); 
 void uTurnRight();
 void solveChallenge();
-void beginApproach(uint32_t now, bool mustClearMarker);
+void beginApproach(uint32_t now);
 void finishStep(uint32_t now);
 void updateManeuver(uint32_t now);
 void setColor(const int c[3]);

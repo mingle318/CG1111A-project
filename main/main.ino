@@ -1,8 +1,8 @@
 #include <MeMCore.h>
 #include <math.h>
 #include <stdio.h>
-#include "Config.h"
-#include "Functions.h"
+#include "config.h"
+#include "functions.h"
 
 MeDCMotor leftMotor(M1);
 MeDCMotor rightMotor(M2);
@@ -63,7 +63,7 @@ void loop() {
   }
   if (state == WAITING) {
     if ((uint32_t)(now - poweredOnAt) < START_DELAY_MS) return;
-    beginApproach(now, false);
+    beginApproach(now);
   }
 
   if (state == APPROACH) {
