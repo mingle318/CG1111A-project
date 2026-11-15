@@ -1,4 +1,3 @@
-
 int getAverageIr() {
   double total = 0;
   for(int i = 0; i < 3; i++) {
@@ -73,16 +72,16 @@ bool blackDetected() {
 
 void toggleDecoderPin(int Y_pin) {
   //call to turn the output Y pin of the 2-to-4 decoder to 0V
-  if (Y_pin == 0) {
+  if (Y_pin == 0) { // IR emitter
     digitalWrite(DECODER.A_pin, LOW);
     digitalWrite(DECODER.B_pin, LOW);
-  } else if (Y_pin == 1) {
+  } else if (Y_pin == 1) { //Green LED
     digitalWrite(DECODER.A_pin, HIGH);
     digitalWrite(DECODER.B_pin, LOW);
-  } else if (Y_pin == 2) {
+  } else if (Y_pin == 2) { //Blue LED
     digitalWrite(DECODER.A_pin, LOW);
     digitalWrite(DECODER.B_pin, HIGH);
-  } else if (Y_pin == 3) {
+  } else if (Y_pin == 3) { //Red LED
     digitalWrite(DECODER.A_pin, HIGH);
     digitalWrite(DECODER.B_pin, HIGH);  
   }
@@ -103,7 +102,7 @@ int getAvgLDRReading(int times) {
 }
 
 int guessColorByValue() {
-  double input[3] = {0, 0, 0};
+  double input[3] = {0, 0, 0}; //{Red, Green, Blue};
   Serial.print("{");
   for(int c = 0; c <= 2; c++){
     toggleDecoderPin(LED_ARRAY[c]);

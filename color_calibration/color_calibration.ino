@@ -46,7 +46,6 @@ void setBalance(){
   // Set white balance  
   Serial.println("Put White Sample For Calibration ...");
   delay(5000); // Delay for five seconds for getting sample ready
-  //digitalWrite(LED,LOW); // Check Indicator OFF during Calibration
   // Scan the white sample.
   // Go through one colour at a time, set the maximum reading for each colour -- red, green and blue to the white array
   for(int i = 0; i<= 2; i++) {
@@ -111,29 +110,21 @@ int getAvgReading(int times){
 }
 
 void setup(){
-// Set up the outputs for the colour sensor
-  // for(int c = 0;c<=2;c++){
-  //   pinMode(ledArray[c],OUTPUT);
-  // }
-  //pinMode(LED,OUTPUT); // Check Indicator -- OFF during Calibration
   pinMode(myDecoder.A_pin, OUTPUT);
   pinMode(myDecoder.B_pin, OUTPUT);
   digitalWrite(myDecoder.A_pin, LOW);
   digitalWrite(myDecoder.B_pin, LOW);
-  Serial.begin(115200); // Begin serial communication
+  Serial.begin(115200);
   setBalance(); // Calibration
-  //digitalWrite(LED, HIGH); //Check Indicator -- ON after Calibration
 
 }
 
 void loop(){
-  // Turn on one colour at a time and LDR reads 5 times
   delay(5000);
   for(int c = 0;c<=2;c++){
     Serial.print(colourStr[c]);
     toggle_decoder_pin(ledArray[c]); // Turn ON the LED, red, green or blue, one colour at a time.
     delay(RGBWait);
-    // Get the average of 5 consecutive readings for the current colour and return an average
     colourArray[c] = getAvgReading(1);
     // The average reading returned minus the lowest value divided by the maximum possible range, multiplied by 255 will give a value between 0-255, representing the value for the current reflectivity (i.e. the colour LDR is exposed to)
     colourArray[c] = (colourArray[c] - blackArray[c])/(greyDiff[c])*255;

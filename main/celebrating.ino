@@ -1,4 +1,3 @@
-
 MeBuzzer buzzer;
 
 #define B0  31
@@ -100,10 +99,10 @@ MeBuzzer buzzer;
 #define TEMPO 200 //in crochet = BPM
 //currently cannot handle tuplets and tempo changes
 
-int score[TOTAL_NOTES] = {D5, A5, D6, 0, 0, 0, D5, A5, D6, 0, 0, 0, E6, 0, 0, F6, E6, F6, E6, C5, A5, 0, 0, 0, A6, 0, D5, 0, F5, G5, A6, 0, 0, 0, 0, 0, A6, 0, D5, 0, F5, G5, E5, 0, 0, 0, 0, 0, D5, A5, D6, 0, 0, 0, D5, A5, D6, 0, 0, 0, E6, 0, 0, F6, E6, F6, E6, C5, A5, 0, 0, 0, A6, 0, D5, 0, F5, G5, A6, 0, 0, 0, A6, 0, D5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+const int score[TOTAL_NOTES] = {D5, A5, D6, 0, 0, 0, D5, A5, D6, 0, 0, 0, E6, 0, 0, F6, E6, F6, E6, C5, A5, 0, 0, 0, A6, 0, D5, 0, F5, G5, A6, 0, 0, 0, 0, 0, A6, 0, D5, 0, F5, G5, E5, 0, 0, 0, 0, 0, D5, A5, D6, 0, 0, 0, D5, A5, D6, 0, 0, 0, E6, 0, 0, F6, E6, F6, E6, C5, A5, 0, 0, 0, A6, 0, D5, 0, F5, G5, A6, 0, 0, 0, A6, 0, D5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 //song of storms zelda
 
-void do_rest(int *i, int score[], int beat_duration, int total_notes) {
+void doRest(int *i, const int score[], int beat_duration, int total_notes) {
     int rest_beats = 0;
     while (*i < total_notes && score[(*i)] == 0) {
         rest_beats++;
@@ -112,7 +111,7 @@ void do_rest(int *i, int score[], int beat_duration, int total_notes) {
     delay((int)(rest_beats * beat_duration));
 }
 
-void do_play_note(int *i, int score[], int beat_duration, int total_notes) {
+void doPlayNote(int *i, int score[], int beat_duration, int total_notes) {
     int play_beats = 1;
     int note_freq = score[(*i)];
    
@@ -138,19 +137,19 @@ void do_play_note(int *i, int score[], int beat_duration, int total_notes) {
     buzzer.tone(note_freq, play_beats * beat_duration);
 }
 
-void read_score(int score[]) {
+void readScore(int score[]) {
     int i = 0;
     int total_notes = TOTAL_NOTES;
     float beat_duration = (60.0/TEMPO)/NOTE_VALUE * 1000;
     while (i < total_notes) {
         if (score[i] == 0) {
-            do_rest(&i, score, (int)beat_duration, total_notes);
+            doRest(&i, score, (int)beat_duration, total_notes);
         } else {
-            do_play_note(&i, score, (int)beat_duration, total_notes);
+            doPlayNote(&i, score, (int)beat_duration, total_notes);
         }
     }
 }
 
 void celebrate() {
-  read_score(score);
+  readScore(score);
 }

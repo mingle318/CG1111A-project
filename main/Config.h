@@ -36,7 +36,7 @@ const int LDR_PIN = A3;
 const uint8_t US_PIN = 12;
 const uint8_t IR_PIN = A2;
 
-const int LED_ARRAY[] = {3, 1, 2};
+const int LED_ARRAY[] = {3, 1, 2}; //Red LED, Green LED, Blue LED.
 
 const float WHITE_ARRAY[] = {988.00, 901.00, 920.00};
 const float BLACK_ARRAY[] = {899.00, 507.00, 598.00};

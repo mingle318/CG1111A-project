@@ -12,10 +12,10 @@ enum RobotState { WAITING, APPROACH, MANEUVER, STOPPED, CALIBRATING };
 RobotState state = WAITING;
 
 struct Step {
-  int8_t leftDirection;
-  int8_t rightDirection;
-  uint32_t duration;
-  bool turning;
+  int8_t leftDirection; // +1 forward, -1 backward; used for turning.
+  int8_t rightDirection; // +1 forward, -1 backward; used for turning.
+  uint32_t duration; // Movement duration in milliseconds.
+  bool turning; // true: turn; false: drive straight using driveStraight().
 };
 
 Step steps[3];
@@ -30,7 +30,7 @@ float steering = 0;
 
 void setup() {
   setWheels(0, 0);
-  //Serial.begin(115200);
+  //Serial.begin(115200); //Turn on for debugging
   pinMode(IR_PIN, INPUT);
   pinMode(US_PIN, INPUT);
   pinMode(LDR_PIN, INPUT);
@@ -38,6 +38,7 @@ void setup() {
   pinMode(DECODER.B_pin, OUTPUT);
 
   state = WAITING;
+  //state = CALIBRATING; //Turn on to enter debugging mode
   stepCount = stepIndex = 0;
   pausing = false;
   poweredOnAt = millis();

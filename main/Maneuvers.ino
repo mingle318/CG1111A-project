@@ -61,7 +61,7 @@ void solveChallenge() {
   steering = 0;
   int idx = guessColorByValue();
   enum Action action = ACTION[idx];
-  setColor(COLOUR_TARGET[idx]);
+  setColor(COLOUR_TARGET[idx]); 
   switch (action) {
     case LEFT_90:  turnLeft90();  break;
     case RIGHT_90: turnRight90(); break;
@@ -87,10 +87,10 @@ void finishStep(uint32_t now) {
 
 void updateManeuver(uint32_t now) {
   if (pausing) {
-    if ((uint32_t)(now - pauseStartedAt) < SETTLE_MS) return;
+    if ((uint32_t)(now - pauseStartedAt) < SETTLE_MS) return; // Pause SETTLE_MS before the first step and after every completed step.
 
     if (stepIndex >= stepCount) {
-      beginApproach(now, true);
+      beginApproach(now, true);  // After the final step, return to APPROACH.
       return;
     }
 
